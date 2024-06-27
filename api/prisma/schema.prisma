@@ -1,0 +1,47 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum TYPE {
+  BREAKFAST
+  LUNCH
+  DINNER
+}
+
+model tag {
+  id   String @id @unique @default(cuid())
+  name String @unique
+
+  meals meal[]
+}
+
+model meal {
+  id String @id @unique @default(cuid())
+
+  name        String @unique
+  description String
+
+  images String[]
+
+  ingredients String[]
+
+  // need to be arranged
+  steps String[]
+
+  //nutrition
+  calories Int?
+  fat      Int?
+  carbs    Int?
+  protein  Int?
+
+  cooktime Int?
+  servings Int?
+
+  tagId String
+  tag   tag    @relation(fields: [tagId], references: [id])
+}
